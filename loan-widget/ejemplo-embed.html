@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Embedding Example - Loan Calculator Widget</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: #2d3748;
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            margin: 0;
+            font-size: 2.5rem;
+            font-weight: 700;
+        }
+        
+        .header p {
+            margin: 20px 0 0 0;
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+        
+        .content {
+            padding: 40px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            align-items: start;
+        }
+        
+        .description {
+            background: #f7fafc;
+            padding: 30px;
+            border-radius: 12px;
+            border-left: 4px solid #667eea;
+        }
+        
+        .description h2 {
+            color: #2d3748;
+            margin-top: 0;
+            margin-bottom: 20px;
+        }
+        
+        .description p {
+            color: #4a5568;
+            margin-bottom: 15px;
+        }
+        
+        .features {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .features li {
+            padding: 8px 0;
+            color: #4a5568;
+            position: relative;
+            padding-left: 25px;
+        }
+        
+        .features li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: #38a169;
+            font-weight: bold;
+        }
+        
+        .widget-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 600px;
+        }
+        
+        .iframe-wrapper {
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        }
+        
+        .code-example {
+            background: #2d3748;
+            color: #e2e8f0;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 20px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            overflow-x: auto;
+        }
+        
+        .code-example code {
+            color: #81e6d9;
+        }
+        
+        @media (max-width: 768px) {
+            .content {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            
+            .header {
+                padding: 20px;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .content {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Loan Calculator Widget</h1>
+            <p>A complete and accessible solution for loan calculations</p>
+        </div>
+        
+        <div class="content">
+            <div class="description">
+                <h2>Widget Features</h2>
+                <p>This loan calculator widget is designed to be easily embedded in any website using an iframe.</p>
+                
+                <ul class="features">
+                    <li>Responsive and accessible design</li>
+                    <li>Real-time validation and calculations</li>
+                    <li>Automatic calculations with French amortization</li>
+                    <li>Complete form with inline layout</li>
+                    <li>Synchronized sliders and numeric inputs</li>
+                    <li>Progressive disclosure of contact form</li>
+                    <li>Communication with parent page</li>
+                    <li>Modern and professional styling</li>
+                </ul>
+                
+                <h3>New Features in v2.0</h3>
+                <ul class="features">
+                    <li>English language interface</li>
+                    <li>Inline input layout (label left, input right)</li>
+                    <li>Dual controls for downpayment and duration</li>
+                    <li>Real-time calculations with 5.5% interest rate</li>
+                    <li>Progressive contact form reveal</li>
+                    <li>Enhanced accessibility and keyboard navigation</li>
+                </ul>
+                
+                <h3>Embedding Code</h3>
+                <div class="code-example">
+                    <code>&lt;iframe src="loan-widget/index.html" width="100%" height="560" style="border:0;"&gt;&lt;/iframe&gt;</code>
+                </div>
+                
+                <h3>Customization</h3>
+                <p>You can adjust the width and height of the iframe according to your needs. The widget automatically adapts to the container.</p>
+            </div>
+            
+            <div class="widget-container">
+                <div class="iframe-wrapper">
+                    <iframe 
+                        src="index.html" 
+                        width="400" 
+                        height="560" 
+                        style="border:0;"
+                        title="Loan Calculator"
+                        loading="lazy">
+                    </iframe>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Example of how to listen to messages from the widget
+        window.addEventListener('message', function(event) {
+            if (event.data.type === 'LOAN_CALCULATOR_DATA') {
+                console.log('Data received from widget:', event.data.data);
+                // Here you can process the form data
+            }
+        });
+    </script>
+</body>
+</html>

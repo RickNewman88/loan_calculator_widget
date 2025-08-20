@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Loan Calculator</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="loan-calculator">
+        <h2>Loan Calculator</h2>
+        
+        <form id="loanForm" class="loan-form">
+            <!-- Loan Amount -->
+            <div class="form-group">
+                <label for="loanAmount">Loan Amount (€)</label>
+                <input 
+                    type="number" 
+                    id="loanAmount" 
+                    name="loanAmount" 
+                    min="1000" 
+                    max="60000" 
+                    step="1000" 
+                    value="25000"
+                    required
+                    aria-describedby="loanAmountHelp"
+                >
+                <small id="loanAmountHelp">Maximum 60,000€</small>
+            </div>
+
+            <!-- Subsidy Percentage -->
+            <div class="form-group">
+                <label for="subsidyPercent">Subsidy Percentage (%)</label>
+                <input 
+                    type="number" 
+                    id="subsidyPercent" 
+                    name="subsidyPercent" 
+                    min="0" 
+                    max="100" 
+                    step="5" 
+                    value="20"
+                    required
+                    aria-describedby="subsidyHelp"
+                >
+                <small id="subsidyHelp">0-100%</small>
+            </div>
+
+            <!-- Downpayment -->
+            <div class="form-group">
+                <label for="downpayment">Downpayment (€)</label>
+                <input 
+                    type="number" 
+                    id="downpayment" 
+                    name="downpayment" 
+                    min="0" 
+                    max="60000" 
+                    step="1000" 
+                    value="5000"
+                    required
+                    aria-describedby="downpaymentHelp"
+                >
+                <small id="downpaymentHelp">Minimum 0€</small>
+                <input 
+                    type="range" 
+                    id="downpaymentSlider" 
+                    min="0" 
+                    max="60000" 
+                    step="1000" 
+                    value="5000"
+                    aria-describedby="downpaymentHelp"
+                >
+            </div>
+
+            <!-- Loan Duration -->
+            <div class="form-group">
+                <label for="loanDuration">Loan Duration</label>
+                <input 
+                    type="number" 
+                    id="loanDuration" 
+                    name="loanDuration" 
+                    min="4" 
+                    max="20" 
+                    step="1" 
+                    value="12"
+                    required
+                    aria-describedby="durationHelp"
+                >
+                <span class="duration-unit">years</span>
+                <small id="durationHelp">4-20 years</small>
+                <input 
+                    type="range" 
+                    id="loanDurationSlider" 
+                    min="4" 
+                    max="20" 
+                    step="1" 
+                    value="12"
+                    aria-describedby="durationHelp"
+                >
+            </div>
+
+            <!-- Hidden Email Section (initially hidden) -->
+            <div id="emailSection" class="email-section" style="display: none;">
+                <!-- Email -->
+                <div class="form-group">
+                    <label for="email">Contact Email</label>
+                    <input 
+                        type="email" 
+                        id="email" 
+                        name="email" 
+                        required
+                        placeholder="your@email.com"
+                        aria-describedby="emailHelp"
+                    >
+                    <small id="emailHelp">To receive your quote</small>
+                </div>
+
+                <!-- Consent Checkbox -->
+                <div class="form-group checkbox-group">
+                    <label class="checkbox-label">
+                        <input 
+                            type="checkbox" 
+                            id="consent" 
+                            name="consent" 
+                            required
+                            aria-describedby="consentHelp"
+                        >
+                        <span class="checkmark"></span>
+                        I agree to receive information about this loan
+                    </label>
+                    <small id="consentHelp">You must accept to continue</small>
+                </div>
+            </div>
+
+            <!-- Contact Button -->
+            <button 
+                type="button" 
+                id="contactBtn" 
+                class="contact-btn"
+                aria-describedby="buttonHelp"
+            >
+                Contact Us
+            </button>
+            <small id="buttonHelp">Click to reveal contact form</small>
+        </form>
+
+        <!-- Results Section -->
+        <div class="results-section" aria-live="polite" aria-atomic="true">
+            <h3>Loan Summary</h3>
+            <div class="result-item">
+                <span class="result-label">Loan amount financed:</span>
+                <span class="result-value" id="financedAmount">—</span>
+            </div>
+            <div class="result-item">
+                <span class="result-label">Subsidy:</span>
+                <span class="result-value" id="subsidyAmount">—</span>
+            </div>
+            <div class="result-item">
+                <span class="result-label">Monthly payment:</span>
+                <span class="result-value" id="monthlyPayment">—</span>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
