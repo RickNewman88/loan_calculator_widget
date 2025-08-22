@@ -8,12 +8,10 @@
 </head>
 <body>
     <div class="loan-calculator">
-        <h2>Loan Calculator</h2>
-        
         <form id="loanForm" class="loan-form">
-            <!-- Loan Amount -->
+            <!-- Total Cost -->
             <div class="form-group">
-                <label for="loanAmount">Loan Amount (€)</label>
+                <label for="loanAmount" title="Total Cost (€)">Total Cost (€)</label>
                 <input 
                     type="number" 
                     id="loanAmount" 
@@ -25,12 +23,12 @@
                     required
                     aria-describedby="loanAmountHelp"
                 >
-                <small id="loanAmountHelp">Maximum 60,000€</small>
+                <small id="loanAmountHelp">Max 60,000€</small>
             </div>
 
             <!-- Subsidy Percentage -->
             <div class="form-group">
-                <label for="subsidyPercent">Subsidy Percentage (%)</label>
+                <label for="subsidyPercent" title="Subsidy Percentage (%)">Subsidy (%)</label>
                 <input 
                     type="number" 
                     id="subsidyPercent" 
@@ -47,7 +45,7 @@
 
             <!-- Downpayment -->
             <div class="form-group">
-                <label for="downpayment">Downpayment (€)</label>
+                <label for="downpayment" title="Downpayment (€)">Downpayment (€)</label>
                 <input 
                     type="number" 
                     id="downpayment" 
@@ -59,7 +57,7 @@
                     required
                     aria-describedby="downpaymentHelp"
                 >
-                <small id="downpaymentHelp">Minimum 0€</small>
+                <small id="downpaymentHelp">Min 0€</small>
                 <input 
                     type="range" 
                     id="downpaymentSlider" 
@@ -73,24 +71,24 @@
 
             <!-- Loan Duration -->
             <div class="form-group">
-                <label for="loanDuration">Loan Duration</label>
+                <label for="loanDuration" title="Loan Duration">Duration</label>
                 <input 
                     type="number" 
                     id="loanDuration" 
                     name="loanDuration" 
-                    min="4" 
+                    min="1" 
                     max="20" 
                     step="1" 
                     value="12"
                     required
                     aria-describedby="durationHelp"
                 >
-                <span class="duration-unit">years</span>
-                <small id="durationHelp">4-20 years</small>
+                <span class="duration-unit">yrs</span>
+                <small id="durationHelp">1-20 years</small>
                 <input 
                     type="range" 
                     id="loanDurationSlider" 
-                    min="4" 
+                    min="1" 
                     max="20" 
                     step="1" 
                     value="12"
@@ -98,11 +96,72 @@
                 >
             </div>
 
-            <!-- Hidden Email Section (initially hidden) -->
-            <div id="emailSection" class="email-section" style="display: none;">
+            <!-- Results Section -->
+            <div class="results-section" aria-live="polite" aria-atomic="true">
+                <h3>Loan Summary</h3>
+                <div class="result-item">
+                    <span class="result-label" title="Loan amount financed">Loan amount:</span>
+                    <span class="result-value" id="financedAmount">—</span>
+                </div>
+                <div class="result-item">
+                    <span class="result-label" title="Subsidy amount">Subsidy:</span>
+                    <span class="result-value" id="subsidyAmount">—</span>
+                </div>
+                <div class="result-item">
+                    <span class="result-label" title="Monthly payment">Monthly:</span>
+                    <span class="result-value" id="monthlyPayment">—</span>
+                </div>
+            </div>
+
+            <!-- Contact Popup Modal -->
+            <div id="contactPopup" class="contact-popup" style="display: none;">
+                <div class="popup-header">
+                    <h4>Contact Information</h4>
+                    <button type="button" class="close-btn" id="closePopup">&times;</button>
+                </div>
+                <div class="popup-content">
+                    <!-- Email -->
+                    <div class="form-group">
+                        <label for="popupEmail" title="Contact Email">Email</label>
+                        <input 
+                            type="email" 
+                            id="popupEmail" 
+                            name="popupEmail" 
+                            required
+                            placeholder="your@email.com"
+                            aria-describedby="popupEmailHelp"
+                        >
+                        <small id="popupEmailHelp">For quote</small>
+                        <div class="error-message" id="popupEmailError" style="display: none;"></div>
+                    </div>
+
+                    <!-- Phone Number -->
+                    <div class="form-group">
+                        <label for="popupPhone" title="Phone Number">Phone</label>
+                        <input 
+                            type="tel" 
+                            id="popupPhone" 
+                            name="popupPhone" 
+                            required
+                            placeholder="+34 600 000 000"
+                            aria-describedby="popupPhoneHelp"
+                        >
+                        <small id="popupPhoneHelp">International format</small>
+                        <div class="error-message" id="popupPhoneError" style="display: none;"></div>
+                    </div>
+
+                    <!-- Send Button -->
+                    <button type="button" id="sendBtn" class="send-btn">
+                        Send
+                    </button>
+                </div>
+            </div>
+
+            <!-- Hidden Contact Section -->
+            <div id="contactSection" class="contact-section" style="display: none;">
                 <!-- Email -->
                 <div class="form-group">
-                    <label for="email">Contact Email</label>
+                    <label for="email" title="Contact Email">Email</label>
                     <input 
                         type="email" 
                         id="email" 
@@ -111,12 +170,28 @@
                         placeholder="your@email.com"
                         aria-describedby="emailHelp"
                     >
-                    <small id="emailHelp">To receive your quote</small>
+                    <small id="emailHelp">For quote</small>
+                    <div class="error-message" id="emailError" style="display: none;"></div>
+                </div>
+
+                <!-- Phone Number -->
+                <div class="form-group">
+                    <label for="phone" title="Phone Number">Phone</label>
+                    <input 
+                        type="tel" 
+                        id="phone" 
+                        name="phone" 
+                        required
+                        placeholder="+34 600 000 000"
+                        aria-describedby="phoneHelp"
+                    >
+                    <small id="phoneHelp">International format</small>
+                    <div class="error-message" id="phoneError" style="display: none;"></div>
                 </div>
 
                 <!-- Consent Checkbox -->
                 <div class="form-group checkbox-group">
-                    <label class="checkbox-label">
+                    <label class="checkbox-label" for="consent">
                         <input 
                             type="checkbox" 
                             id="consent" 
@@ -125,9 +200,10 @@
                             aria-describedby="consentHelp"
                         >
                         <span class="checkmark"></span>
-                        I agree to receive information about this loan
+                        <span class="consent-text">I agree to receive loan information</span>
                     </label>
-                    <small id="consentHelp">You must accept to continue</small>
+                    <small id="consentHelp">Required to continue</small>
+                    <div class="error-message" id="consentError" style="display: none;"></div>
                 </div>
             </div>
 
@@ -142,23 +218,6 @@
             </button>
             <small id="buttonHelp">Click to reveal contact form</small>
         </form>
-
-        <!-- Results Section -->
-        <div class="results-section" aria-live="polite" aria-atomic="true">
-            <h3>Loan Summary</h3>
-            <div class="result-item">
-                <span class="result-label">Loan amount financed:</span>
-                <span class="result-value" id="financedAmount">—</span>
-            </div>
-            <div class="result-item">
-                <span class="result-label">Subsidy:</span>
-                <span class="result-value" id="subsidyAmount">—</span>
-            </div>
-            <div class="result-item">
-                <span class="result-label">Monthly payment:</span>
-                <span class="result-value" id="monthlyPayment">—</span>
-            </div>
-        </div>
     </div>
 
     <script src="script.js"></script>

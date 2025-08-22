@@ -13,15 +13,23 @@ document.addEventListener('DOMContentLoaded', function() {
     const downpaymentSlider = document.getElementById('downpaymentSlider');
     const loanDuration = document.getElementById('loanDuration');
     const loanDurationSlider = document.getElementById('loanDurationSlider');
-    const email = document.getElementById('email');
-    const consent = document.getElementById('consent');
     const contactBtn = document.getElementById('contactBtn');
-    const emailSection = document.getElementById('emailSection');
+    
+    // Popup elements
+    const contactPopup = document.getElementById('contactPopup');
+    const popupEmail = document.getElementById('popupEmail');
+    const popupPhone = document.getElementById('popupPhone');
+    const closePopup = document.getElementById('closePopup');
+    const sendBtn = document.getElementById('sendBtn');
     
     // Results elements
     const financedAmount = document.getElementById('financedAmount');
     const subsidyAmount = document.getElementById('subsidyAmount');
     const monthlyPayment = document.getElementById('monthlyPayment');
+    
+    // Error elements
+    const popupEmailError = document.getElementById('popupEmailError');
+    const popupPhoneError = document.getElementById('popupPhoneError');
     
     // Constants
     const ANNUAL_INTEREST_RATE = 5.5; // 5.5% annual interest rate
@@ -40,6 +48,20 @@ document.addEventListener('DOMContentLoaded', function() {
     function isValidEmail(email) {
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         return emailRegex.test(email);
+    }
+    
+    // Function to validate phone number (international format)
+    function isValidPhone(phone) {
+        // Remove all non-digit characters except leading +
+        const cleanPhone = phone.replace(/[^\d+]/g, '');
+        
+        // Check if it starts with + and has 10-15 digits total
+        if (cleanPhone.startsWith('+')) {
+            return cleanPhone.length >= 11 && cleanPhone.length <= 16;
+        }
+        
+        // Check if it's just digits (10-15 digits)
+        return cleanPhone.length >= 10 && cleanPhone.length <= 15;
     }
     
     // Function to calculate monthly payment using French amortization method
@@ -61,87 +83,109 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Function to calculate loan results
     function calculateLoanResults() {
-        const amount = parseFloat(loanAmount.value) || 0;
-        const subsidy = parseFloat(subsidyPercent.value) || 0;
-        const down = parseFloat(downpayment.value) || 0;
-        const duration = parseFloat(loanDuration.value) || 12;
-        
+        const loanAmount = parseFloat(document.getElementById('loanAmount').value) || 0;
+        const subsidyPercent = parseFloat(document.getElementById('subsidyPercent').value) || 0;
+        const downpayment = parseFloat(document.getElementById('downpayment').value) || 0;
+        const loanDuration = parseFloat(document.getElementById('loanDuration').value) || 1;
+
         // Calculate subsidy amount
-        const subsidyEuro = (amount * subsidy) / 100;
+        const subsidyAmount = loanAmount * (subsidyPercent / 100);
         
-        // Calculate principal financed (max of 0 and loan amount - subsidy - downpayment)
-        const financed = Math.max(amount - subsidyEuro - down, 0);
+        // Calculate principal financed (loan amount - subsidy - downpayment, minimum 0)
+        const principalFinanced = Math.max(loanAmount - subsidyAmount - downpayment, 0);
         
-        // Calculate monthly payment
-        const monthly = calculateMonthlyPayment(financed, ANNUAL_INTEREST_RATE, duration);
-        
-        // Update results
-        financedAmount.textContent = formatCurrency(financed);
-        subsidyAmount.textContent = formatCurrency(subsidyEuro);
-        monthlyPayment.textContent = formatCurrency(monthly);
+        // Calculate monthly payment using French amortization method
+        const monthlyPayment = calculateMonthlyPayment(principalFinanced, ANNUAL_INTEREST_RATE, loanDuration);
+
+        // Update results display
+        document.getElementById('financedAmount').textContent = formatCurrency(loanAmount);
+        document.getElementById('subsidyAmount').textContent = formatCurrency(subsidyAmount);
+        document.getElementById('monthlyPayment').textContent = formatCurrency(monthlyPayment);
         
         return {
-            financed,
-            subsidyEuro,
-            monthly
+            loanAmount,
+            subsidyAmount,
+            monthlyPayment
         };
     }
     
     // Function to validate the complete form
     function validateForm() {
-        const isEmailValid = isValidEmail(email.value);
-        const isConsentChecked = consent.checked;
-        const isFormValid = isEmailValid && isConsentChecked;
+        let isFormValid = true;
+        
+        // Clear all previous error messages
+        popupEmailError.style.display = 'none';
+        popupPhoneError.style.display = 'none';
+        
+        // Validate email
+        if (!popupEmail.value.trim()) {
+            popupEmailError.textContent = 'Email is required';
+            popupEmailError.style.display = 'block';
+            isFormValid = false;
+        } else if (!isValidEmail(popupEmail.value)) {
+            popupEmailError.textContent = 'Please enter a valid email address';
+            popupEmailError.style.display = 'block';
+            isFormValid = false;
+        }
+        
+        // Validate phone
+        if (!popupPhone.value.trim()) {
+            popupPhoneError.textContent = 'Phone number is required';
+            popupPhoneError.style.display = 'block';
+            isFormValid = false;
+        } else if (!isValidPhone(popupPhone.value)) {
+            popupPhoneError.textContent = 'Please enter a valid phone number';
+            popupPhoneError.style.display = 'block';
+            isFormValid = false;
+        }
         
         return isFormValid;
     }
     
-    // Function to show/hide email section
-    function toggleEmailSection() {
-        if (emailSection.style.display === 'none') {
-            emailSection.style.display = 'block';
-            contactBtn.textContent = 'Submit Application';
-            contactBtn.type = 'submit';
-            contactBtn.disabled = true;
-            
-            // Update button help text
-            const buttonHelp = document.getElementById('buttonHelp');
-            buttonHelp.textContent = 'Complete email and consent to submit';
-            buttonHelp.style.color = '#718096';
-            
-            // Focus on email field
-            email.focus();
-        } else {
-            emailSection.style.display = 'none';
-            contactBtn.textContent = 'Contact Us';
-            contactBtn.type = 'button';
-            contactBtn.disabled = false;
-            
-            // Reset form
-            email.value = '';
-            consent.checked = false;
-            
-            // Update button help text
-            const buttonHelp = document.getElementById('buttonHelp');
-            buttonHelp.textContent = 'Click to reveal contact form';
-            buttonHelp.style.color = '#718096';
+    // Function to focus on first invalid field
+    function focusFirstInvalidField() {
+        if (!popupEmail.value.trim() || !isValidEmail(popupEmail.value)) {
+            popupEmail.focus();
+        } else if (!popupPhone.value.trim() || !isValidPhone(popupPhone.value)) {
+            popupPhone.focus();
         }
     }
     
-    // Function to update button state based on email validation
+    // Function to show/hide email section
+    function toggleEmailSection() {
+        // This function is no longer needed as the contact form is always visible
+    }
+
+    // Function to show/hide contact popup
+    function toggleContactPopup() {
+        if (contactPopup.style.display === 'none') {
+            contactPopup.style.display = 'block';
+            // Focus on email field
+            popupEmail.focus();
+        } else {
+            contactPopup.style.display = 'none';
+        }
+    }
+
+    // Function to close popup
+    function closeContactPopup() {
+        contactPopup.style.display = 'none';
+        // Reset form
+        popupEmail.value = '';
+        popupPhone.value = '';
+        // Clear errors
+        popupEmailError.style.display = 'none';
+        popupPhoneError.style.display = 'none';
+    }
+
+    // Function to update button state based on form validation
     function updateButtonState() {
-        if (emailSection.style.display !== 'none') {
-            const isValid = validateForm();
-            contactBtn.disabled = !isValid;
+        if (contactPopup.style.display !== 'none') {
+            const isEmailValid = popupEmail.value.trim() && isValidEmail(popupEmail.value);
+            const isPhoneValid = popupPhone.value.trim() && isValidPhone(popupPhone.value);
+            const isValid = isEmailValid && isPhoneValid;
             
-            const buttonHelp = document.getElementById('buttonHelp');
-            if (isValid) {
-                buttonHelp.textContent = 'Ready to submit!';
-                buttonHelp.style.color = '#38a169';
-            } else {
-                buttonHelp.textContent = 'Complete email and consent to submit';
-                buttonHelp.style.color = '#718096';
-            }
+            sendBtn.disabled = !isValid;
         }
     }
     
@@ -171,13 +215,13 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Event listeners for loan duration synchronization
     loanDuration.addEventListener('input', function() {
-        const value = parseInt(this.value) || 12;
+        const value = parseInt(this.value) || 1;
         
         // Validate range
         if (value > 20) {
             this.value = 20;
-        } else if (value < 4) {
-            this.value = 4;
+        } else if (value < 1) {
+            this.value = 1;
         }
         
         // Sync with slider
@@ -226,26 +270,25 @@ document.addEventListener('DOMContentLoaded', function() {
         
         calculateLoanResults();
     });
-    
-    // Event listeners for email validation
-    email.addEventListener('input', updateButtonState);
-    consent.addEventListener('change', updateButtonState);
+
+    // Event listeners for form validation
+    popupEmail.addEventListener('input', updateButtonState);
+    popupPhone.addEventListener('input', updateButtonState);
     
     // Event listener for contact button
     contactBtn.addEventListener('click', function(e) {
-        if (this.type === 'button') {
-            // First click - show email section
-            toggleEmailSection();
-        }
-        // If type is submit, let the form handle submission
+        toggleContactPopup();
     });
-    
-    // Event listener for form submission
-    loanForm.addEventListener('submit', function(e) {
+
+    // Event listener for close popup button
+    closePopup.addEventListener('click', closeContactPopup);
+
+    // Event listener for send button
+    sendBtn.addEventListener('click', function(e) {
         e.preventDefault();
         
         if (!validateForm()) {
-            alert('Please complete all fields correctly.');
+            focusFirstInvalidField();
             return;
         }
         
@@ -255,8 +298,8 @@ document.addEventListener('DOMContentLoaded', function() {
             subsidyPercent: parseFloat(subsidyPercent.value),
             downpayment: parseFloat(downpayment.value),
             loanDuration: parseInt(loanDuration.value),
-            email: email.value,
-            consent: consent.checked,
+            email: popupEmail.value,
+            phone: popupPhone.value,
             // Calculated data
             financedAmount: parseFloat(financedAmount.textContent.replace(/[^\d]/g, '')),
             subsidyAmount: parseFloat(subsidyAmount.textContent.replace(/[^\d]/g, '')),
@@ -267,19 +310,18 @@ document.addEventListener('DOMContentLoaded', function() {
         console.log('Form data:', formData);
         
         // Show success message
-        alert('Thank you! We have received your application. We will contact you soon by email.');
+        alert('Thank you! We have received your application. We will contact you soon by email and phone.');
         
-        // Reset form and hide email section
-        loanForm.reset();
-        toggleEmailSection();
+        // Close popup and reset form
+        closeContactPopup();
         
         // Restore default values
         loanAmount.value = 25000;
         subsidyPercent.value = 20;
         downpayment.value = 5000;
         downpaymentSlider.value = 5000;
-        loanDuration.value = 12;
-        loanDurationSlider.value = 12;
+        loanDuration.value = 1;
+        loanDurationSlider.value = 1;
         
         // Recalculate results
         calculateLoanResults();
@@ -320,7 +362,9 @@ document.addEventListener('DOMContentLoaded', function() {
         calculateResults: calculateLoanResults,
         validateForm: validateForm,
         sendMessageToParent: sendMessageToParent,
-        toggleEmailSection: toggleEmailSection
+        toggleContactPopup: toggleContactPopup,
+        closeContactPopup: closeContactPopup
     };
     
 });
+

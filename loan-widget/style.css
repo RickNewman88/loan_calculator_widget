@@ -7,129 +7,186 @@
 
 body {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-    line-height: 1.6;
+    line-height: 1.15;
     color: #333;
     background-color: #f8f9fa;
-    padding: 20px;
-}
-
-/* Contenedor principal del widget */
-.loan-calculator {
-    max-width: 400px;
-    margin: 0 auto;
-    background: white;
-    border-radius: 12px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-    overflow: hidden;
-}
-
-/* Encabezado */
-.loan-calculator h2 {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    color: white;
-    padding: 20px;
-    text-align: center;
-    font-size: 1.5rem;
-    font-weight: 600;
+    padding: 0;
     margin: 0;
 }
 
-/* Formulario */
-.loan-form {
-    padding: 24px;
+/* Contenedor principal del widget - Fixed dimensions, no header */
+.loan-calculator {
+    width: 284px;
+    height: 474px;
+    margin: 0;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    position: relative;
 }
 
-/* Grupos de formulario */
+/* Formulario - Compact padding with better group spacing */
+.loan-form {
+    padding: 8px;
+    height: 474px;
+    overflow-y: hidden;
+}
+
+/* Grupos de formulario - Better spacing between groups */
 .form-group {
-    margin-bottom: 20px;
+    margin-bottom: 12px;
 }
 
 .form-group label {
     display: inline-block;
     width: 45%;
-    margin-bottom: 8px;
-    font-weight: 600;
+    margin-bottom: 0px;
+    font-weight: 500;
     color: #2d3748;
-    font-size: 0.95rem;
+    font-size: 13px;
     vertical-align: top;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    line-height: 1.2;
 }
 
 .form-group input[type="number"],
-.form-group input[type="email"] {
+.form-group input[type="email"],
+.form-group input[type="tel"] {
     display: inline-block;
     width: 50%;
-    padding: 12px 16px;
-    border: 2px solid #e2e8f0;
-    border-radius: 8px;
-    font-size: 1rem;
-    transition: all 0.3s ease;
+    padding: 4px 6px;
+    border: 1px solid #e2e8f0;
+    border-radius: 4px;
+    font-size: 13px;
+    transition: all 0.2s ease;
     background-color: #fff;
     vertical-align: top;
+    line-height: 1.2;
 }
 
 .form-group input[type="number"]:focus,
-.form-group input[type="email"]:focus {
+.form-group input[type="email"]:focus,
+.form-group input[type="tel"]:focus {
     outline: none;
     border-color: #667eea;
-    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+    box-shadow: 0 0 0 2px rgba(102, 126, 234, 0.1);
 }
 
-/* Unidad de duración */
+/* Unidad de duración - Compact */
 .duration-unit {
     display: inline-block;
-    margin-left: 8px;
+    margin-left: 4px;
     color: #718096;
     font-weight: 500;
     vertical-align: top;
-    line-height: 48px; /* Alinear con el input */
+    line-height: 24px;
+    font-size: 11px;
 }
 
-/* Slider personalizado */
+/* Slider personalizado - Compact with better spacing */
 .form-group input[type="range"] {
     width: 100%;
-    height: 8px;
-    border-radius: 4px;
+    height: 4px;
+    border-radius: 2px;
     background: #e2e8f0;
     outline: none;
     -webkit-appearance: none;
-    margin: 10px 0 0 0;
+    margin: 1px 0 0 0;
     clear: both;
 }
 
 .form-group input[type="range"]::-webkit-slider-thumb {
     -webkit-appearance: none;
     appearance: none;
-    width: 20px;
-    height: 20px;
+    width: 12px;
+    height: 12px;
     border-radius: 50%;
     background: #667eea;
     cursor: pointer;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
 }
 
 .form-group input[type="range"]::-moz-range-thumb {
-    width: 20px;
-    height: 20px;
+    width: 12px;
+    height: 12px;
     border-radius: 50%;
     background: #667eea;
     cursor: pointer;
     border: none;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
 }
 
-/* Texto de ayuda */
+/* Texto de ayuda - Tighter spacing with main text, more space after */
 .form-group small {
     display: block;
-    margin-top: 6px;
-    font-size: 0.85rem;
-    color: #718096;
-    font-style: italic;
+    margin-top: 0px;
+    font-size: 11px;
+    color: #6b7280;
+    font-style: normal;
     clear: both;
+    line-height: 1.1;
+    margin-bottom: 0px;
+    font-weight: 400;
 }
 
-/* Checkbox personalizado */
+/* Sección de email - Better spacing */
+.email-section {
+    border-top: 1px solid #e2e8f0;
+    padding-top: 8px;
+    margin-top: 12px;
+    background: #f8f9fa;
+    border-radius: 4px;
+    padding: 8px;
+}
+
+/* Error messages */
+.error-message {
+    color: #e53e3e;
+    font-size: 10px;
+    margin-top: 2px;
+    font-weight: 500;
+    line-height: 1.1;
+}
+
+/* Botón de contacto - Better spacing */
+.contact-btn {
+    width: 100%;
+    padding: 8px 16px;
+    background: #667eea;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    margin-bottom: 4px;
+    line-height: 1.2;
+}
+
+.contact-btn:hover:not(:disabled) {
+    background: #5a67d8;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
+}
+
+.contact-btn:disabled {
+    background: #cbd5e0;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+/* Checkbox personalizado - Better spacing and visibility */
 .checkbox-group {
-    margin-bottom: 24px;
+    margin-bottom: 12px;
+    min-height: 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
 
 .checkbox-label {
@@ -137,7 +194,9 @@ body {
     align-items: flex-start;
     cursor: pointer;
     font-weight: 500;
-    line-height: 1.4;
+    line-height: 1.2;
+    font-size: 13px;
+    min-height: 20px;
 }
 
 .checkbox-label input[type="checkbox"] {
@@ -145,15 +204,15 @@ body {
 }
 
 .checkmark {
-    width: 20px;
-    height: 20px;
-    border: 2px solid #e2e8f0;
-    border-radius: 4px;
-    margin-right: 12px;
-    margin-top: 2px;
+    width: 14px;
+    height: 14px;
+    border: 1px solid #e2e8f0;
+    border-radius: 2px;
+    margin-right: 6px;
+    margin-top: 1px;
     position: relative;
     background: white;
-    transition: all 0.3s ease;
+    transition: all 0.2s ease;
     flex-shrink: 0;
 }
 
@@ -169,7 +228,7 @@ body {
     left: 50%;
     transform: translate(-50%, -50%);
     color: white;
-    font-size: 14px;
+    font-size: 10px;
     font-weight: bold;
 }
 
@@ -177,60 +236,35 @@ body {
     border-color: #667eea;
 }
 
-/* Botón de contacto */
-.contact-btn {
-    width: 100%;
-    padding: 14px 24px;
-    background: #667eea;
-    color: white;
-    border: none;
-    border-radius: 8px;
-    font-size: 1.1rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    margin-bottom: 8px;
+.consent-text {
+    font-size: 13px;
+    line-height: 1.2;
+    flex: 1;
 }
 
-.contact-btn:hover:not(:disabled) {
-    background: #5a67d8;
-    transform: translateY(-1px);
-    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
-}
-
-.contact-btn:disabled {
-    background: #cbd5e0;
-    cursor: not-allowed;
-    transform: none;
-    box-shadow: none;
-}
-
-/* Sección de email (inicialmente oculta) */
-.email-section {
-    border-top: 1px solid #e2e8f0;
-    padding-top: 20px;
-    margin-top: 20px;
-}
-
-/* Sección de resultados */
+/* Sección de resultados - Better spacing */
 .results-section {
     background: #f7fafc;
-    padding: 20px 24px;
-    border-top: 1px solid #e2e8f0;
+    padding: 8px;
+    border: 1px solid #e2e8f0;
+    border-radius: 4px;
+    margin: 12px 0;
 }
 
 .results-section h3 {
     color: #2d3748;
-    margin-bottom: 16px;
-    font-size: 1.2rem;
+    margin-bottom: 6px;
+    font-size: 13px;
     text-align: center;
+    font-weight: 600;
+    line-height: 1.2;
 }
 
 .result-item {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 12px 0;
+    padding: 3px 0;
     border-bottom: 1px solid #e2e8f0;
 }
 
@@ -241,12 +275,15 @@ body {
 .result-label {
     font-weight: 500;
     color: #4a5568;
+    font-size: 12px;
+    line-height: 1.2;
 }
 
 .result-value {
-    font-weight: 700;
+    font-weight: 600;
     color: #667eea;
-    font-size: 1.1rem;
+    font-size: 12px;
+    line-height: 1.2;
 }
 
 /* Estados de error y validación */
@@ -256,38 +293,28 @@ body {
 
 .form-group input:invalid:focus {
     border-color: #e53e3e;
-    box-shadow: 0 0 0 3px rgba(229, 62, 62, 0.1);
+    box-shadow: 0 0 0 2px rgba(229, 62, 62, 0.1);
 }
 
-/* Responsive design */
-@media (max-width: 480px) {
-    body {
-        padding: 10px;
-    }
-    
+/* Responsive design - Adjusted for fixed dimensions */
+@media (max-width: 300px) {
     .loan-calculator {
-        border-radius: 8px;
-    }
-    
-    .loan-form {
-        padding: 20px;
-    }
-    
-    .results-section {
-        padding: 16px 20px;
+        width: 100%;
+        height: auto;
+        min-height: 474px;
     }
     
     .form-group label {
         width: 100%;
         display: block;
-        margin-bottom: 8px;
+        margin-bottom: 0px;
     }
     
     .form-group input[type="number"],
     .form-group input[type="email"] {
         width: 100%;
         display: block;
-        padding: 10px 14px;
+        padding: 4px 6px;
         font-size: 16px; /* Evita zoom en iOS */
     }
     
@@ -312,6 +339,169 @@ body {
     }
     
     .form-group input:focus {
-        border-width: 3px;
+        border-width: 2px;
     }
+}
+
+/* Sección de contacto - Siempre visible */
+.contact-section {
+    border-top: 1px solid #e2e8f0;
+    padding-top: 8px;
+    margin-top: 12px;
+    background: #f8f9fa;
+    border-radius: 4px;
+    padding: 8px;
+}
+
+/* Botón de envío */
+.submit-btn {
+    width: 100%;
+    padding: 8px 16px;
+    background: #667eea;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    margin-bottom: 4px;
+    line-height: 1.2;
+}
+
+.submit-btn:hover:not(:disabled) {
+    background: #5a67d8;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
+}
+
+.submit-btn:disabled {
+    background: #cbd5e0;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+/* Contact Popup Modal */
+.contact-popup {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 260px;
+    background: white;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+    z-index: 1000;
+    animation: popupFadeIn 0.3s ease-out;
+}
+
+@keyframes popupFadeIn {
+    from {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
+    }
+}
+
+.popup-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 16px;
+    border-bottom: 1px solid #e2e8f0;
+    background: #f7fafc;
+    border-radius: 8px 8px 0 0;
+}
+
+.popup-header h4 {
+    margin: 0;
+    font-size: 14px;
+    font-weight: 600;
+    color: #2d3748;
+}
+
+.close-btn {
+    background: none;
+    border: none;
+    font-size: 20px;
+    color: #718096;
+    cursor: pointer;
+    padding: 0;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4px;
+    transition: all 0.2s ease;
+}
+
+.close-btn:hover {
+    background: #e2e8f0;
+    color: #4a5568;
+}
+
+.popup-content {
+    padding: 16px;
+}
+
+.popup-content .form-group {
+    margin-bottom: 12px;
+}
+
+.popup-content .form-group:last-child {
+    margin-bottom: 0;
+}
+
+.send-btn {
+    width: 100%;
+    padding: 10px 16px;
+    background: #667eea;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    margin-top: 8px;
+}
+
+.send-btn:hover:not(:disabled) {
+    background: #5a67d8;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
+}
+
+.send-btn:disabled {
+    background: #cbd5e0;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+/* Overlay for popup */
+.popup-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.3);
+    z-index: 999;
+}
+
+/* Button help text - Smaller and gray */
+#buttonHelp {
+    font-size: 10px;
+    color: #9ca3af;
+    text-align: center;
+    margin-top: 2px;
+    line-height: 1.2;
+    font-weight: 400;
 }
